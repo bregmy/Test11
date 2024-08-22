@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            position: relative;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+        input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px; /* Added margin for spacing between buttons */
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .signup-button {
+            background-color: #28a745;
+        }
+        .signup-button:hover {
+            background-color: #218838;
+        }
+        .loading {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+            display: none;
+        }
+    </style>
+    <script>
+    async function loginUser(event) {
+        event.preventDefault();
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('error-message').style.display = 'none';
+        const formData = new FormData(event.target);
+        const user = {
+            email: formData.get('email'),
+            password: formData.get('password')
+        };
+        try {
+            const response = await fetch('http://127.0.0.1:8000/accounts/login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            });
+            const result = await response.json();
+            if (response.ok) {
+               
+                const token = result.token;
+
+                localStorage.setItem('authToken', token);
+
+                alert("Login successful!");
+                window.location.href = 'report.html';  // Redirect to report.html
+            } else {
+                document.getElementById('error-message').innerText = result.error || 'Incorrect email or password.';
+                document.getElementById('error-message').style.display = 'block';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while logging in.');
+        } finally {
+            document.getElementById('loading').style.display = 'none';
+        }
+    }
+
+    function redirectToSignup() {
+        window.location.href = 'signup.html';
+    }
+</script>
+</head>
+<body>
+    <div class="container">
+        <h1>User Login</h1>
+        <div id="error-message" class="error-message"></div>
+        <form onsubmit="loginUser(event)">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br>
+
+            <button type="submit">Login</button>
+        </form>
+        <button class="signup-button" onclick="redirectToSignup()">Sign Up</button>
+        <div id="loading" class="loading">
+            <img src="loading.gif" alt="Loading..." width="50" height="50">
+        </div>
+    </div>
+</body>
+</html>

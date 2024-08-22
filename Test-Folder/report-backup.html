@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BiasWatch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0e7ec;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .header,
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            background-color: #f8f8f8;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 20px;
+            box-sizing: border-box;
+        }
+
+        .header .left,
+        .header .center,
+        .header .right {
+            display: flex;
+            align-items: center;
+        }
+
+        .header .center {
+            flex-grow: 1;
+            justify-content: center;
+        }
+
+        .header .left div,
+        .header .center div,
+        .header .right div {
+            margin: 0 10px;
+        }
+
+        .header .right button {
+            padding: 10px 20px;
+            background-color: #4b00a2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .header .right button:hover {
+            background-color: #350074;
+        }
+
+        .nav a {
+            margin-left: 20px;
+            color: #555;
+            text-decoration: none;
+        }
+
+        .nav a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50%;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            flex-direction: column;
+        }
+
+        .main-content {
+            width: 100%;
+        }
+
+        h1,
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin: 10px 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .button,
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .button:hover,
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .button {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .toggle-link a {
+            color: #007BFF;
+        }
+
+        .toggle-link a:hover {
+            text-decoration: underline;
+        }
+
+        #success-message,
+        #update-success-message,
+        #delete-success-message {
+            display: none;
+            color: green;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header">
+            <div class="left">
+                <div>CEAMLS</div>
+            </div>
+            <div class="center">
+                <div>BiasWatch</div>
+                <div>An LLM performance Cataloging tool...</div>
+            </div>
+            <div class="right">
+                <button id="logout-button">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div id="submit-container" class="main-content">
+            <h1>Submit Report</h1>
+            <div class="input-group">
+                <label for="caption">Caption:</label>
+                <input type="text" id="caption" name="caption" placeholder="maximum length 20">
+            </div>
+            <div class="input-group">
+                <label for="llm">Select LLM:</label>
+                <select id="llm" name="llm">
+                    <option value="">-------</option>
+                    <option value="chatgpt">ChatGPT</option>
+                    <option value="gpt-3">GPT-3</option>
+                    <option value="gpt-4">GPT-4</option>
+                    <option value="bert">BERT</option>
+                    <option value="other">Other</option>
+                </select>
+                <input type="text" id="other-llm" name="other-llm" placeholder="Enter your LLM" style="display:none; margin-top: 10px;">
+            </div>
+            <div class="input-group">
+                <label for="synopsis">Synopsis:</label>
+                <textarea id="synopsis" name="synopsis" rows="4" placeholder="Enter synopsis here"></textarea>
+            </div>
+            <div class="input-group" id="text-input-group" style="display:none;">
+                <label for="text-conversation">Text Conversation:</label>
+                <textarea id="text-conversation" name="text-conversation" rows="4" placeholder="Enter text conversation"></textarea>
+            </div>
+            <div class="input-group" id="image-input-group" style="display:none;">
+                <label for="image">Add Image:</label>
+                <input type="file" id="image" name="image" accept="image/*">
+            </div>
+            <div id="conversation-options" style="display:none;">
+                <button class="button" id="add-text-button" style="background-color: #007bff;">Add Text</button>
+                <button class="button" id="add-image-button" style="background-color: #007bff;">Add Image</button>
+            </div>
+            <button class="button" id="add-conversation-button" style="background-color: #007bff;">Add Conversation</button>
+            <div class="section-title">Selected Tags (max-5):</div>
+            <div class="input-group">
+                <label for="tags">Tags:</label>
+                <input type="text" id="tags" name="tags" placeholder="filter tags">
+                <div class="tags">
+                    <span class="tag">gender</span>
+                    <span class="tag">politics</span>
+                </div>
+            </div>
+
+            <div class="input-group bias-score-container">
+                <label id="bias-score-label" for="bias-score">Bias Score (between 1 and 10): 5</label>
+                <input type="range" id="bias-score" name="bias-score" min="1" max="10" step="1" value="5">
+            </div>
+            <button class="button" id="submit-report-button" style="background-color: #007bff;">Submit Report</button>
+            <div id="success-message">Report submitted successfully!</div>
+        </div>
+
+        <div id="update-container" class="main-content" style="display:none;">
+            <h1>Update Report</h1>
+            <div class="input-group">
+                <label for="update-report-id">Report ID:</label>
+                <input type="text" id="update-report-id" name="update-report-id" placeholder="Enter report ID">
+            </div>
+            <div class="input-group">
+                <label for="update-caption">Caption:</label>
+                <input type="text" id="update-caption" name="update-caption" placeholder="maximum length 20">
+            </div>
+            <div class="input-group">
+                <label for="update-tags">Tags:</label>
+                <input type="text" id="update-tags" name="update-tags" placeholder="filter tags">
+            </div>
+            <div class="input-group bias-score-container">
+                <label id="update-bias-score-label" for="update-bias-score">Bias Score (between 1 and 10): 5</label>
+                <input type="range" id="update-bias-score" name="update-bias-score" min="1" max="10" step="1" value="5">
+            </div>
+            <button class="button" id="update-report-button" style="background-color: #007bff;">Update Report</button>
+            <div id="update-success-message">Report updated successfully!</div>
+        </div>
+
+        <div id="delete-container" class="main-content" style="display:none;">
+            <h1>Delete Report</h1>
+            <div class="input-group">
+                <label for="delete-report-id">Report ID:</label>
+                <input type="text" id="delete-report-id" name="delete-report-id" placeholder="Enter report ID">
+            </div>
+            <button class="button" id="delete-report-button" style="background-color: #007bff;">Delete Report</button>
+            <div id="delete-success-message">Report deleted successfully!</div>
+        </div>
+    </div>
+
+    <div class="button-group">
+        <button class="button" id="show-submit-button">Submit Report</button>
+        <button class="button" id="show-update-button">Update Report</button>
+        <button class="button" id="show-delete-button">Delete Report</button>
+        <button class="button" id="return-button">Return to Home</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('llm').addEventListener('change', function () {
+                var otherLlmInput = document.getElementById('other-llm');
+                if (this.value === 'other') {
+                    otherLlmInput.style.display = 'block';
+                } else {
+                    otherLlmInput.style.display = 'none';
+                }
+            });
+
+            document.getElementById('add-conversation-button').addEventListener('click', function () {
+                document.getElementById('conversation-options').style.display = 'block';
+            });
+            document.getElementById('add-text-button').addEventListener('click', function () {
+                document.getElementById('text-input-group').style.display = 'block';
+            });
+            document.getElementById('add-image-button').addEventListener('click', function () {
+                document.getElementById('image-input-group').style.display = 'block';
+            });
+
+            document.getElementById('bias-score').addEventListener('input', function () {
+                document.getElementById('bias-score-label').textContent = 'Bias Score (between 1 and 10): ' + this.value;
+            });
+
+            document.getElementById('submit-report-button').addEventListener('click', async function (e) {
+                e.preventDefault(); // Prevent the default form submission behavior
+                console.log('Submit button clicked');
+
+                const caption = document.getElementById('caption').value;
+                const llm = document.getElementById('llm').value;
+                const otherLlm = document.getElementById('other-llm').value;
+                const synopsis = document.getElementById('synopsis').value;
+                const textConversation = document.getElementById('text-conversation').value;
+                const tags = Array.from(document.querySelectorAll('.tags .tag')).map(tag => tag.textContent);
+                const biasScore = document.getElementById('bias-score').value;
+                let imageEvidence = null;
+
+                const imageInput = document.getElementById('image');
+                if (imageInput.files.length > 0) {
+                    const formData = new FormData();
+                    formData.append('file', imageInput.files[0]);
+                    const response = await fetch('/upload_image', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const result = await response.json();
+                    imageEvidence = [result.filePath];
+                }
+
+                const jsonData = {
+                    user: 2, // Assuming user ID is 2
+                    caption: caption,
+                    bias_score: parseInt(biasScore),
+                    ai_model: 1, // Assuming AI model ID is 1
+                    tags: tags,
+                    report_summary: synopsis,
+                    prompt: textConversation,
+                    image_evidence: imageEvidence,
+                    text_evidence: textConversation
+                };
+
+                const token = localStorage.getItem('authToken');
+                if (!token) {
+                    alert('You must be logged in to submit a report.');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('http://127.0.0.1:8000/reports/api/create-report/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Token ${token}`
+                        },
+                        body: JSON.stringify(jsonData)
+                    });
+                    const data = await response.json();
+                    console.log('Response data:', data);
+                    if (response.ok) {
+                        document.getElementById('success-message').style.display = 'block';
+                        resetForm();
+                    } else {
+                        console.error('Error:', data);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            });
+
+            document.getElementById('update-report-button').addEventListener('click', async function (e) {
+                e.preventDefault(); // Prevent the default form submission behavior
+                console.log('Update button clicked');
+
+                const reportId = document.getElementById('update-report-id').value;
+                const caption = document.getElementById('update-caption').value;
+                const tags = document.getElementById('update-tags').value.split(',').map(tag => tag.trim());
+                const biasScore = document.getElementById('update-bias-score').value;
+
+                const jsonData = {
+                    caption: caption,
+                    tags: tags,
+                    bias_score: parseInt(biasScore)
+                };
+
+                const token = localStorage.getItem('authToken');
+                if (!token) {
+                    alert('You must be logged in to update a report.');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`http://127.0.0.1:8000/reports/api/update-report/${reportId}/`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Token ${token}`
+                        },
+                        body: JSON.stringify(jsonData)
+                    });
+                    const data = await response.json();
+                    console.log('Response data:', data);
+                    if (response.ok) {
+                        document.getElementById('update-success-message').style.display = 'block';
+                        resetUpdateForm();
+                    } else {
+                        console.error('Error:', data);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            });
+
+            document.getElementById('delete-report-button').addEventListener('click', async function (e) {
+                e.preventDefault(); // Prevent the default form submission behavior
+                console.log('Delete button clicked');
+
+                const reportId = document.getElementById('delete-report-id').value;
+
+                const token = localStorage.getItem('authToken');
+                if (!token) {
+                    alert('You must be logged in to delete a report.');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`http://127.0.0.1:8000/reports/api/delete-report/${reportId}/`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Token ${token}`
+                        }
+                    });
+                    if (response.ok) {
+                        document.getElementById('delete-success-message').style.display = 'block';
+                        resetDeleteForm();
+                    } else {
+                        const data = await response.json();
+                        console.error('Error:', data);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            });
+
+            function resetForm() {
+                document.getElementById('caption').value = '';
+                document.getElementById('llm').value = '';
+                document.getElementById('other-llm').value = '';
+                document.getElementById('synopsis').value = '';
+                document.getElementById('text-conversation').value = '';
+                document.getElementById('tags').value = '';
+                document.getElementById('bias-score').value = 5;
+                document.getElementById('bias-score-label').textContent = 'Bias Score (between 1 and 10): 5';
+                document.getElementById('text-input-group').style.display = 'none';
+                document.getElementById('image-input-group').style.display = 'none';
+                document.getElementById('conversation-options').style.display = 'none';
+                document.querySelector('.tags').innerHTML = '';
+            }
+
+            function resetUpdateForm() {
+                document.getElementById('update-report-id').value = '';
+                document.getElementById('update-caption').value = '';
+                document.getElementById('update-tags').value = '';
+                document.getElementById('update-bias-score').value = 5;
+                document.getElementById('update-bias-score-label').textContent = 'Bias Score (between 1 and 10): 5';
+            }
+
+            function resetDeleteForm() {
+                document.getElementById('delete-report-id').value = '';
+            }
+
+            document.getElementById('show-submit-button').addEventListener('click', function () {
+                document.getElementById('submit-container').style.display = 'block';
+                document.getElementById('update-container').style.display = 'none';
+                document.getElementById('delete-container').style.display = 'none';
+            });
+
+            document.getElementById('show-update-button').addEventListener('click', function () {
+                document.getElementById('submit-container').style.display = 'none';
+                document.getElementById('update-container').style.display = 'block';
+                document.getElementById('delete-container').style.display = 'none';
+            });
+
+            document.getElementById('show-delete-button').addEventListener('click', function () {
+                document.getElementById('submit-container').style.display = 'none';
+                document.getElementById('update-container').style.display = 'none';
+                document.getElementById('delete-container').style.display = 'block';
+            });
+
+            document.getElementById('return-button').addEventListener('click', function () {
+                window.location.href = 'index.html';
+            });
+
+            document.getElementById('logout-button').addEventListener('click', async function () {
+                const token = localStorage.getItem('authToken');
+                if (token) {
+                    try {
+                        const response = await fetch('http://127.0.0.1:8000/accounts/logout/', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Token ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        if (response.ok) {
+                            // Clear token from local storage
+                            localStorage.removeItem('authToken');
+                            alert('Logout successful!');
+                            window.location.href = 'login.html'; // Redirect to the login page
+                        } else {
+                            alert('Failed to log out.');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('An error occurred while logging out.');
+                    }
+                } else {
+                    alert('No token found.');
+                    window.location.href = 'login.html'; // Redirect to the login page
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

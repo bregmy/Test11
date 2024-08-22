@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+    <header>
+
+        <div class="header">
+           
+        </div>
+    </header>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BiasWatch Report Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 80%;
+        }
+        .left-panel, .right-panel {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 45%;
+        }
+        .left-panel {
+            text-align: left;
+        }
+        .right-panel {
+            text-align: center;
+        }
+        .logo {
+            width: 50px;
+        }
+        .button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 10px 0;
+        }
+        .tag {
+            background-color: #e6e6e6;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px 10px;
+            margin: 5px;
+        }
+        .slider {
+            width: 80%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <img src="path/to/logo.png" alt="CEAMLS Logo" class="logo">
+            <h2>CEAMLS</h2>
+            <p>Report Engagement</p>
+            <p>Trending Reports</p>
+            <p>LLM trends based on stored reports</p>
+            <p>etc</p>
+            <h3>Welcome admin</h3>
+            <p>Reports</p>
+            <p style="color: purple;">race biased</p>
+            <p>LLMs</p>
+            <p style="color: purple;">ChatGPT</p>
+            <button class="button">Close Report Form</button>
+        </div>
+        <div class="right-panel">
+            <h3>File a Report</h3>
+            <p>Caption:</p>
+            <input type="text" placeholder="maximum length 20" maxlength="20">
+            <p>Select LLM:</p>
+            <select>
+                <option value="none">-------</option>
+                <!-- Add other options here -->
+            </select>
+            <button class="button">Add Conversation</button>
+            <p>Selected Tags <small>(max-5)</small>:</p>
+            <div class="tags">
+                <div class="tag">gender</div>
+                <div class="tag">politics</div>
+            </div>
+            <p>Bias Score (between 0 and 10):</p>
+            <input type="range" min="0" max="10" class="slider">
+            <button class="button">Submit Report</button>
+        </div>
+    </div>
+</body>
+</html>

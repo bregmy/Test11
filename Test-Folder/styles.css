@@ -1,0 +1,203 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #ddd;
+}
+
+.header .left, .header .center, .header .right {
+    display: flex;
+    align-items: center;
+}
+
+.header .right button {
+    background-color: #4b00a2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.header .right button:hover {
+    background-color: #350074;
+}
+
+.left-aligned-button {
+    background-color: #4b00a2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: left;
+    width: fit-content;
+}
+
+.left-aligned-button:hover {
+    background-color: #350074;
+}
+
+.hover-buttons button {
+    margin-left: 5px;
+    padding: 5px 10px;
+    background-color: #4b00a2;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.hover-buttons button:hover {
+    background-color: #350074;
+}
+
+.user-id-container {
+    position: relative;
+    display: inline-block;
+}
+
+.user-id-container .hover-buttons {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    white-space: nowrap;
+}
+
+.user-id-container:hover .hover-buttons {
+    display: block;
+}
+
+.dots {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.dot {
+    height: 15px;
+    width: 15px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.dot.active {
+    background-color: #717171;
+}
+
+/* Style for table headers */
+thead {
+    background-color: rgb(48, 11, 117);
+    color: white;
+}
+
+/* Styles for chart container */
+.chart-container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.chart-container h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+.chart-container canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.chart-container select {
+    max-width: 1000px;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Position the tooltip above the text */
+    left: 50%;
+    margin-left: -100px; /* Use half of the width (120/2 = 60), to center the tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+ .filter-container {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    margin-top: 0px; /* Added to reduce space above */
+}
+
+.container {
+    padding-top: 0px; /* Added to eliminate space above the container */
+    margin-top: 0px; /* Added to eliminate any margin above the container */
+}
+
+.chart-container {
+    margin-bottom: 0px; /* Ensures there's no extra space below the chart */
+}
+
+/* Additional adjustments if necessary */
+body, html {
+    margin: 0;
+    padding: 0;
+}
+        .form-control {
+            border-radius: 20px;
+            padding: 10px;
+            box-shadow: none;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            box-shadow: 0px 0px 5px rgba(75, 0, 162, 0.5);
+            border-color: #4b00a2;
+        }
+
+        .btn-primary {
+            background-color: #4b00a2;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #350074;
+        }
+
+        .filter-container label {
+            font-weight: bold;
+            color: #4b00a2;
+        }

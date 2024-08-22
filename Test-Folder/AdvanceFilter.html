@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLM Bias Analytics</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      width: 80%;
+      margin: auto;
+      overflow: hidden;
+    }
+    .header {
+      background: #87CEEB; /* Sky Blue */
+      color: #fff;
+      padding-top: 30px;
+      min-height: 70px;
+      border-bottom: #00BFFF 3px solid; /* Deep Sky Blue */
+    }
+    .header h1 {
+      text-align: center;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .control-panel {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .control-panel > div {
+      flex: 1;
+      margin: 0 10px;
+    }
+    .control-panel h3 {
+      margin-bottom: 10px;
+    }
+    .control-panel form {
+      display: flex;
+      flex-direction: column;
+    }
+    .control-panel label {
+      margin-bottom: 5px;
+    }
+    .control-panel input,
+    .control-panel select,
+    .control-panel button {
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .control-panel button {
+      background: #87CEEB; /* Sky Blue */
+      color: #fff;
+      cursor: pointer;
+    }
+    .control-panel button:hover {
+      background: #00BFFF; /* Deep Sky Blue */
+    }
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+    }
+    .button-group a {
+      text-decoration: none;
+    }
+    .button-group button {
+      margin: 0 5px;
+    }
+  </style>
+</head>
+<body>
+
+
+
+
+  <div class="header">
+    <h1>Advanced filter</h1>
+  </div>
+  <div class="container">
+    <div class="control-panel">
+      <div class="filter-section">
+        <h3>Filter Reports</h3>
+        <form id="filter-form">
+          <label for="date-range">Date Range:</label>
+          <input type="date" id="start-date" name="start-date">
+          <input type="date" id="end-date" name="end-date">
+          
+          <label for="bias-type">Bias Type:</label>
+          <select id="bias-type" name="bias-type">
+            <option value="all">All</option>
+            <option value="race">Race</option>
+            <option value="gender">Gender</option>
+            <option value="employment">Employment</option>
+            <option value="religion">Religion</option>
+          </select>
+          
+          <label for="severity">Severity:</label>
+          <select id="severity" name="severity">
+            <option value="all">All</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+          
+          <div class="button-group">
+            <button type="submit">Apply Filters</button>
+            <a href="index.html">
+              <button type="button" class="return-button">Return to Home</button>
+            </a>
+          </div>
+        </form>
+      </div>
+      
+      <div class="sorting-section">
+        <h3>Sort Reports</h3>
+        <form id="sorting-form">
+          <label for="sort-by">Sort By:</label>
+          <select id="sort-by" name="sort-by">
+            <option value="date">Date</option>
+            <option value="severity">Severity</option>
+            <option value="type">Bias Type</option>
+          </select>
+          
+          <label for="sort-order">Order:</label>
+          <select id="sort-order" name="sort-order">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+          
+          <button type="submit">Sort</button>
+        </form>
+      </div>
+      
+      <div class="search-section">
+        <h3>Search Reports</h3>
+        <form id="search-form">
+          <input type="text" id="search-query" name="search-query" placeholder="Search by keywords...">
+          <button type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Date Selector</title>
+</head>
+<body>
+    <div>
+        <label for="year">Year:</label>
+        <select id="year">
+            <option value="">--Select Year--</option>
+            <!-- Years will be populated by JavaScript -->
+        </select>
+
+        <label for="month">Month:</label>
+        <select id="month">
+            <option value="">--Select Month--</option>
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </select>
+
+        <label for="day">Day:</label>
+        <select id="day">
+            <option value="">--Select Day--</option>
+            <!-- Days will be populated by JavaScript -->
+        </select>
+    </div>
+
+    <button onclick="showDate()">Show Date</button>
+
+    <script>
+        // Populate year select box with a range of years
+        const yearSelect = document.getElementById('year');
+        const currentYear = new Date().getFullYear();
+        for (let i = currentYear; i >= 1900; i--) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            yearSelect.appendChild(option);
+        }
+
+        // Populate day select box based on selected year and month
+        function populateDays() {
+            const daySelect = document.getElementById('day');
+            daySelect.innerHTML = '';
+            const year = document.getElementById('year').value;
+            const month = document.getElementById('month').value;
+            const daysInMonth = new Date(year, month, 0).getDate();
+            for (let i = 1; i <= daysInMonth; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                daySelect.appendChild(option);
+            }
+        }
+
+        // Event listeners to update days when year or month changes
+        document.getElementById('year').addEventListener('change', populateDays);
+        document.getElementById('month').addEventListener('change', populateDays);
+
+        // Initial population of days
+        populateDays();
+
+        // Function to show the selected date
+        function showDate() {
+            const year = document.getElementById('year').value;
+            const month = document.getElementById('month').value;
+            const day = document.getElementById('day').value;
+
+            const x_axis_filter = {
+                year: year,
+                month: month,
+                day: day
+            };
+
+            const queryString = new URLSearchParams(x_axis_filter).toString();
+
+            fetch(`http://127.0.0.1:8000/charts/api/retrieve-chat-data?${queryString}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                alert(`Selected Date: ${year}-${month}-${day}\nAPI Response: ${JSON.stringify(data)}`);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>

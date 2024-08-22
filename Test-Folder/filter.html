@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Selection UI</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <h4>Select Date:</h4>
+                
+                <!-- Year Input -->
+                <div class="form-group">
+                    <label for="yearInput"><strong>Year</strong></label>
+                    <input type="number" id="yearInput" name="yearInput" class="form-control" placeholder="Enter Year" required>
+                </div>
+
+                <!-- Month Input -->
+                <div class="form-group">
+                    <label for="monthInput"><strong>Month</strong></label>
+                    <input type="number" id="monthInput" name="monthInput" class="form-control" placeholder="Enter Month" required>
+                </div>
+
+                <!-- Day Input -->
+                <div class="form-group">
+                    <label for="dayInput"><strong>Day</strong></label>
+                    <input type="number" id="dayInput" name="dayInput" class="form-control" placeholder="Enter Day" required>
+                </div>
+
+                <!-- LLM Dropdown -->
+                <div class="form-group">
+                    <label for="llmSelect"><strong>LLM</strong></label>
+                    <select class="form-control" id="llmSelect" name="llmSelect" required>
+                        <option value="" disabled selected>Select an LLM</option>
+                    </select>
+                </div>
+
+                <!-- Filter Buttons (Vertical) -->
+                <div class="form-group">
+                    <label><strong>Filter:</strong></label>
+                    <div id="llm-buttons" class="d-flex flex-column">
+                        <!-- Buttons will be populated here dynamically -->
+                    </div>
+                </div>
+
+                <!-- Show Result Button -->
+                <div class="text-center">
+                    <button id="showResultBtn" class="btn btn-primary">Show Result</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        async function fetchLLMs() {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/reports/api/get-llms/');
+                const llms = await response.json();
+                
+                const llmSelect = document.getElementById('llmSelect');
+                const llmButtonsContainer = document.getElementById('llm-buttons');
+                
+                llms.forEach(llm => {
+                    // Populate the LLM dropdown
+                    const option = document.createElement('option');
+                    option.value = llm.name;
+                    option.textContent = llm.name;
+                    llmSelect.appendChild(option);
+
+                    // Populate the buttons vertically
+                    const button = document.createElement('button');
+                    button.className = 'btn btn-outline-primary my-1';
+                    button.dataset.filter = llm.name;
+                    button.textContent = llm.name;
+                    llmButtonsContainer.appendChild(button);
+                });
+            } catch (error) {
+                console.error('Error fetching LLMs:', error);
+            }
+        }
+        
+        // Fetch and populate LLMs when the page loads
+        document.addEventListener('DOMContentLoaded', fetchLLMs);
+    </script>
+</body>
+</html>

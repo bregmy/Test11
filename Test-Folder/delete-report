@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Report</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header">
+            <div class="left">
+                <div>CEAMLS</div>
+            </div>
+            <div class="center">
+                <div>BiasWatch</div>
+                <div>An LLM performance Cataloging tool...</div>
+            </div>
+            <div class="right">
+                <button onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            <h1>Delete Report</h1>
+            <div class="input-group">
+                <label for="delete-report-id">Report ID:</label>
+                <input type="text" id="delete-report-id" name="delete-report-id" placeholder="Enter report ID">
+            </div>
+            <button class="button" id="delete-report-button" style="background-color: #007bff;">Delete Report</button>
+            <div id="delete-success-message">Report deleted successfully!</div>
+        </div>
+    </div>
+    <script src="scripts.js"></script>
+</body>
+</html>
